@@ -39,6 +39,7 @@ type Msg
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg {input, messages} =
+
   case msg of
     Input newInput ->
       (Model newInput messages, Cmd.none)
