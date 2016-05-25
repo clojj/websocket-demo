@@ -5,7 +5,10 @@ import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import WebSocket
-
+import String exposing (split)
+import Json.Decode exposing (..)
+-- import Json.Decode.Extra exposing ((|:))
+import Debug
 
 main =
   Html.program
@@ -35,7 +38,10 @@ type Msg = NewMessage String
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg {messages} =
   case msg of
-    NewMessage str -> (Model (str :: messages), Cmd.none)
+    NewMessage str ->
+      -- let _ = Debug.log "received: " str
+      -- in 
+        (Model (str :: messages), Cmd.none)
 
 
 -- SUBSCRIPTIONS
@@ -52,7 +58,23 @@ view model =
   div []
     [ div [] (List.map viewMessage model.messages) ]
 
+type alias Traced =
+  { timestamp: Float,
+    elapsed:   Int
+  }
+  
+myDecoder = "CamelMessageHistory" := Json.Decode.list (Json.Decode.object2 Traced 
+                                                        ("timestamp" := Json.Decode.float)
+                                                        ("elapsed" := Json.Decode.int))
 
 viewMessage : String -> Html msg
 viewMessage msg =
-  div [] [ text msg ]
+  let _ = Debug.log "view: " msg
+  in
+    case Json.Decode.decodeString myDecoder msg of -- todo toString here ?
+      (Ok timestamps) -> div [] [ul [] (List.map viewItem timestamps)]
+      (Err errMsg) -> div [] [text errMsg]
+
+viewItem : Traced -> Html msg
+viewItem {timestamp, elapsed} =
+  li [] [text ((toString timestamp) ++ ", " ++ (toString elapsed))]
