@@ -1,8 +1,13 @@
 package de.jwin;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.RouteNode;
 import org.apache.camel.processor.interceptor.DefaultTraceEventMessage;
 import org.apache.camel.processor.interceptor.TraceEventMessage;
+import org.apache.camel.spi.TracedRouteNodes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyTraceMessageProcessor implements org.apache.camel.Processor {
     @Override
@@ -11,20 +16,15 @@ public class MyTraceMessageProcessor implements org.apache.camel.Processor {
         TraceEventMessage msg = exchange.getIn().getBody(DefaultTraceEventMessage.class);
         Exchange tracedExchange = msg.getTracedExchange();
 
-//        exchange.getIn().setBody("traced");
-        exchange.getIn().setBody(tracedExchange.getProperties());
+        Map<String, Object> map = new HashMap<>();
+        map.put("properties", tracedExchange.getProperties());
+        map.put("time", msg.getTimestamp());
 
-        /*
-        String message =
-                msg.getFromEndpointUri() + ";" +
-                        msg.getRouteId() + ";" +
-                        msg.getToNode() + ";" +
-                        msg.getTimestamp() +
-                        "|body: " + msg.getBody() +
-                        "|props: " + msg.getProperties();
-*/
+        //map.put("node", msg.getToNode());
+        TracedRouteNodes traced = exchange.getUnitOfWork().getTracedRouteNodes();
+        RouteNode last = traced.getLastNode();
+        map.put("node", last.getProcessorDefinition().getId());
 
-//        tracedExchange.getProperty("CamelMessageHistory");
-//        exchange.getIn().setBody(message);
+        exchange.getIn().setBody(map);
     }
 }
