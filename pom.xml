@@ -9,8 +9,7 @@
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>A Camel Route</name>
-  <url>http://www.myorganization.org</url>
+  <name>Camel (traced) Websocket Demo</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
