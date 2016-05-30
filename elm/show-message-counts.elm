@@ -33,6 +33,7 @@ type alias Model =
 
 init : (Model, Cmd Msg)
 init =
+  -- TODO build graph dynamically
   (Model [("node1", Set.empty), ("node2", Set.empty), ("node3", Set.empty)] "", Cmd.none)
 
 type alias Trace =

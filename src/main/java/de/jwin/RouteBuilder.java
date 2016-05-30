@@ -13,9 +13,9 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
         getContext().setTracing(true);
         Tracer tracer = new Tracer();
         tracer.setEnabled(true);
-        tracer.setTraceOutExchanges(false);
+        tracer.setTraceOutExchanges(true);
         tracer.setDestinationUri("direct:traced");
-        tracer.setLogLevel(LoggingLevel.OFF);
+        tracer.setLogLevel(LoggingLevel.DEBUG);
 /*
         DefaultTraceFormatter defaultTraceFormatter = tracer.getDefaultTraceFormatter();
         defaultTraceFormatter.setShowExchangeId(true);
@@ -29,15 +29,22 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
         getContext().setMessageHistory(true);
 
         from("websocket://foo").id("ROUTE websocket")
+                .log("INPUT ${body}").id("websocket input")
                 .to("seda:next");
 
-        from("seda:next").id("SEDA").threads(3)
+        from("seda:next").id("SEDA")
+                .to("direct:process");
+
+        from("direct:process")
                 .log("${body}").id("node1")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
                         System.out.println("inside processor...");
-                        Thread.sleep(5000);
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                        }
                         System.out.println("processor exit");
                     }
                 }).id("node2")
