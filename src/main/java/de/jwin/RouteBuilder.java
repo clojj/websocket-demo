@@ -23,20 +23,19 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
         defaultTraceFormatter.setShowBodyType(true);
         defaultTraceFormatter.setShowNode(true);
 */
-
         getContext().addInterceptStrategy(tracer);
-
         getContext().setMessageHistory(true);
 
+
+        // ROUTES
         from("websocket://foo").id("ROUTE websocket")
                 .log("INPUT ${body}").id("websocket input")
                 .to("seda:next");
 
-        from("seda:next").id("SEDA")
-                .to("direct:process");
+        from("seda:next?concurrentConsumers=3").id("SEDA")
 
-        from("direct:process")
                 .log("${body}").id("node1")
+
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
@@ -48,7 +47,10 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
                         System.out.println("processor exit");
                     }
                 }).id("node2")
+
                 .to("websocket://foo").id("node3");
+
+
 
         from("direct:traced")
                 .process(new TraceMessageProcessor())

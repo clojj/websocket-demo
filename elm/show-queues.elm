@@ -2,7 +2,7 @@ module WebsocketDemoShowMessageCounts exposing (..)
 
 import Html exposing (..)
 import Html.App as Html
--- import Html.Attributes exposing (..)
+import Html.Attributes exposing (..)
 -- import Html.Events exposing (..)
 import WebSocket
 import Json.Decode exposing (..)
@@ -12,6 +12,8 @@ import Set
 import Dict
 import Time exposing (Time, second)
 
+import Svg
+import Svg.Attributes
 
 
 main : Program Never
@@ -51,6 +53,7 @@ type Msg =
   NewMessage Trace |
   ErrorMessage String |
   Tick Time
+
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg {ids, errorMessage, currentTime} =
@@ -101,7 +104,7 @@ decoderTrace = Json.Decode.object3 Trace
 -- VIEW
 overLimit : Time -> (MessageId, (NodeName, Float)) -> Bool
 overLimit currTime (mid, (_, time)) =
-  if time > 0 && currTime - time > 8000 then
+  if time > 0 && currTime - time > 2000 then
     True
   else
     False
@@ -110,8 +113,31 @@ view : Model -> Html Msg
 view {ids, errorMessage, currentTime} =
   div []
     [ div [] (List.map viewQueues (List.filter (overLimit currentTime) (Dict.toList ids))),
-      div [] [text ("time " ++ toString currentTime)]]
+      div [style
+               [ ("position", "absolute")
+               , ("left", "500px")
+               , ("top", "10px")
+               ]] [ viewTime currentTime ] ]
+--      div [] [text ("time " ++ toString currentTime)]]
+
 
 viewQueues : (MessageId, (NodeName, Float)) -> Html msg
 viewQueues (mid, (name, time)) =
   div [] [text (mid ++ " at " ++ name ++ " " ++ toString time)]
+
+viewTime : Time -> Html Msg
+viewTime t =
+  let
+    angle =
+      turns (Time.inMinutes t)
+
+    handX =
+      toString (50 + 40 * cos angle)
+
+    handY =
+      toString (50 + 40 * sin angle)
+  in
+    Svg.svg [ Svg.Attributes.viewBox "0 0 100 100", Svg.Attributes.width "300px" ]
+      [ Svg.circle [ Svg.Attributes.cx "50", Svg.Attributes.cy "50", Svg.Attributes.r "45", Svg.Attributes.fill "#0B79CE" ] []
+      , Svg.line [ Svg.Attributes.x1 "50", Svg.Attributes.y1 "50", Svg.Attributes.x2 handX, Svg.Attributes.y2 handY, Svg.Attributes.stroke "#023963" ] []
+      ]
