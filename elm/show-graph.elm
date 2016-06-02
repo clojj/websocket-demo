@@ -22,7 +22,8 @@ main =
 
 -- MODEL
 type alias Trace =
-  { node: String,
+  { id: String,
+    node: String,
     fromNode: String,
     toNode: String,
     time: Float
@@ -49,7 +50,7 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg {traces, adj} =
   case msg of
 
-    NewMessage {node, fromNode, toNode, time} ->
+    NewMessage {id, node, fromNode, toNode, time} ->
         let
             newAdj = Dict.insert node [toNode] adj
         in
@@ -71,7 +72,8 @@ jsonToTraceMsg str =
     (Err errMsg) -> ErrorMessage errMsg
 
 decoderTrace : Decoder Trace
-decoderTrace = Json.Decode.object4 Trace
+decoderTrace = Json.Decode.object5 Trace
+  ("id" := Json.Decode.string)
   ("node" := Json.Decode.string)
   ("fromNode" := Json.Decode.string)
   ("toNode" := Json.Decode.string)
@@ -92,6 +94,8 @@ viewTrace trace =
   div [] [text trace]
 
 viewAdj : (String, List String) -> Html msg
-viewAdj (k, v) = case v of
-  (x :: xs) -> div [] [text ("key: " ++ k ++ " value: " ++ toString v)]
-  [] -> div [] [text ("key: " ++ k ++ " value: []")]
+viewAdj (k, v) = div [] [text ("key: " ++ k ++ " value: " ++ toString v)]
+-- viewAdj (k, v) = case v of
+--   (x :: []) -> div [] [text ("key: " ++ k ++ " value: " ++ toString x)]
+--   (x :: xs) -> div [] [text ("key: " ++ k ++ " value: " ++ toString x)]
+--   [] -> div [] [text ("key: " ++ k ++ " value: []")]

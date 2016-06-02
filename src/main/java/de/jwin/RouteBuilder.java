@@ -29,8 +29,8 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
 
         // ROUTES
         from("websocket://foo").id("ROUTE websocket")
-                .log("INPUT ${body}").id("websocket input")
-                .to("seda:next");
+                .log("INPUT ${body}").id("INPUT log")
+                .to("seda:next").id("to seda");
 
         from("seda:next?concurrentConsumers=3").id("SEDA")
 

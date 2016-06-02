@@ -25,8 +25,8 @@ class TraceMessageProcessor implements org.apache.camel.Processor {
         //map.put("node", msg.getToNode());
         String nodeId = exchange.getUnitOfWork().getTracedRouteNodes().getLastNode().getProcessorDefinition().getId();
         map.put("node", nodeId);
-        map.put("fromNode", msg.getPreviousNode());
-        map.put("toNode", msg.getToNode());
+        map.put("fromNode", msg.getPreviousNode() != null ? msg.getPreviousNode() : "---");
+        map.put("toNode", msg.getToNode() != null ? msg.getToNode() : "---");
 
         map.put("time", msg.getTimestamp());
 
