@@ -95,7 +95,3 @@ viewTrace trace =
 
 viewAdj : (String, List String) -> Html msg
 viewAdj (k, v) = div [] [text ("key: " ++ k ++ " value: " ++ toString v)]
--- viewAdj (k, v) = case v of
---   (x :: []) -> div [] [text ("key: " ++ k ++ " value: " ++ toString x)]
---   (x :: xs) -> div [] [text ("key: " ++ k ++ " value: " ++ toString x)]
---   [] -> div [] [text ("key: " ++ k ++ " value: []")]
