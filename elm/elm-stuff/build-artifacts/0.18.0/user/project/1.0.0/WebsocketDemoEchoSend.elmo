@@ -1,0 +1,103 @@
+var _user$project$WebsocketDemoEchoSend$viewMessage = function (msg) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(msg),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$WebsocketDemoEchoSend$Model = F2(
+	function (a, b) {
+		return {input: a, messages: b};
+	});
+var _user$project$WebsocketDemoEchoSend$init = {
+	ctor: '_Tuple2',
+	_0: A2(
+		_user$project$WebsocketDemoEchoSend$Model,
+		'',
+		{ctor: '[]'}),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$WebsocketDemoEchoSend$update = F2(
+	function (msg, _p0) {
+		var _p1 = _p0;
+		var _p4 = _p1.messages;
+		var _p3 = _p1.input;
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'Input':
+				return {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$WebsocketDemoEchoSend$Model, _p2._0, _p4),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Send':
+				return {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$WebsocketDemoEchoSend$Model, _p3, _p4),
+					_1: A2(_elm_lang$websocket$WebSocket$send, 'ws://localhost:9292/foo', _p3)
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: A2(
+						_user$project$WebsocketDemoEchoSend$Model,
+						_p3,
+						{ctor: '::', _0: _p2._0, _1: _p4}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _user$project$WebsocketDemoEchoSend$NewMessage = function (a) {
+	return {ctor: 'NewMessage', _0: a};
+};
+var _user$project$WebsocketDemoEchoSend$subscriptions = function (model) {
+	return A2(_elm_lang$websocket$WebSocket$listen, 'ws://localhost:9292/foo', _user$project$WebsocketDemoEchoSend$NewMessage);
+};
+var _user$project$WebsocketDemoEchoSend$Send = {ctor: 'Send'};
+var _user$project$WebsocketDemoEchoSend$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _user$project$WebsocketDemoEchoSend$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				A2(_elm_lang$core$List$map, _user$project$WebsocketDemoEchoSend$viewMessage, model.messages)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onInput(_user$project$WebsocketDemoEchoSend$Input),
+						_1: {ctor: '[]'}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$WebsocketDemoEchoSend$Send),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Send'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$WebsocketDemoEchoSend$main = _elm_lang$html$Html$program(
+	{init: _user$project$WebsocketDemoEchoSend$init, view: _user$project$WebsocketDemoEchoSend$view, update: _user$project$WebsocketDemoEchoSend$update, subscriptions: _user$project$WebsocketDemoEchoSend$subscriptions})();

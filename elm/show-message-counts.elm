@@ -1,16 +1,12 @@
 module WebsocketDemoShowMessageCounts exposing (..)
 
 import Html exposing (..)
-import Html.App as Html
--- import Html.Attributes exposing (..)
--- import Html.Events exposing (..)
 import WebSocket
 import Json.Decode exposing (..)
--- import Json.Decode.Extra exposing ((|:))
 
 import Set
 
-main : Program Never
+main : Program Never Model Msg
 main =
   Html.program
     { init = init
@@ -34,7 +30,7 @@ type alias Model =
 init : (Model, Cmd Msg)
 init =
   -- TODO build graph dynamically
-  (Model [("node1", Set.empty), ("node2", Set.empty), ("node3", Set.empty)] "", Cmd.none)
+  (Model [("node1", Set.empty), ("node2", Set.empty), ("Websocket ECHO REPLY", Set.empty)] "", Cmd.none)
 
 type alias Trace =
   { id:   String,
@@ -79,10 +75,10 @@ jsonToTraceMsg str =
     (Err errMsg) -> ErrorMessage errMsg
 
 decoderTrace : Decoder Trace
-decoderTrace = Json.Decode.object3 Trace
-  ("id" := Json.Decode.string)
-  ("node" := Json.Decode.string)
-  ("time" := Json.Decode.float)
+decoderTrace = Json.Decode.map3 Trace
+  (at ["id"] Json.Decode.string)
+  (at ["node"] Json.Decode.string)
+  (at ["time"] Json.Decode.float)
 
 
 -- VIEW

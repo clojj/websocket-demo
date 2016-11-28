@@ -15,19 +15,14 @@ class TraceMessageProcessor implements org.apache.camel.Processor {
         TraceEventMessage msg = exchange.getIn().getBody(DefaultTraceEventMessage.class);
         Exchange tracedExchange = msg.getTracedExchange();
         Object breadcrumbid = tracedExchange.getIn().getHeader("breadcrumbid");
-        //System.out.println("breadcrumbid = " + breadcrumbid);
+        String nodeId = exchange.getUnitOfWork().getTracedRouteNodes().getLastNode().getProcessorDefinition().getId();
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", breadcrumbid);
-
-        //map.put("properties", tracedExchange.getProperties());
-
-        String nodeId = exchange.getUnitOfWork().getTracedRouteNodes().getLastNode().getProcessorDefinition().getId();
         map.put("node", nodeId);
-        map.put("fromNode", msg.getPreviousNode() != null ? msg.getPreviousNode() : "---");
-        map.put("toNode", msg.getToNode() != null ? msg.getToNode() : "---");
-
         map.put("time", msg.getTimestamp());
+        //map.put("fromNode", msg.getPreviousNode() != null ? msg.getPreviousNode() : "---");
+        //map.put("toNode", msg.getToNode() != null ? msg.getToNode() : "---");
 
         exchange.getIn().setBody(map);
     }

@@ -1,0 +1,150 @@
+var _user$project$WebsocketDemoShowMessageCounts$viewCount = function (_p0) {
+	var _p1 = _p0;
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p1._0,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' ',
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$Set$size(_p1._1))))),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$WebsocketDemoShowMessageCounts$view = function (_p2) {
+	var _p3 = _p2;
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				A2(_elm_lang$core$List$map, _user$project$WebsocketDemoShowMessageCounts$viewCount, _p3.nodes)),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$WebsocketDemoShowMessageCounts$updateSet = F2(
+	function (_p5, _p4) {
+		var _p6 = _p5;
+		var _p11 = _p6.node;
+		var _p10 = _p6.id;
+		var _p7 = _p4;
+		var _p9 = _p7._1;
+		var _p8 = _p7._0;
+		return ((!_elm_lang$core$Native_Utils.eq(_p8, _p11)) && A2(_elm_lang$core$Set$member, _p10, _p9)) ? {
+			ctor: '_Tuple2',
+			_0: _p8,
+			_1: A2(_elm_lang$core$Set$remove, _p10, _p9)
+		} : (_elm_lang$core$Native_Utils.eq(_p8, _p11) ? {
+			ctor: '_Tuple2',
+			_0: _p8,
+			_1: A2(_elm_lang$core$Set$insert, _p10, _p9)
+		} : {ctor: '_Tuple2', _0: _p8, _1: _p9});
+	});
+var _user$project$WebsocketDemoShowMessageCounts$Model = F2(
+	function (a, b) {
+		return {nodes: a, errorMessage: b};
+	});
+var _user$project$WebsocketDemoShowMessageCounts$init = {
+	ctor: '_Tuple2',
+	_0: A2(
+		_user$project$WebsocketDemoShowMessageCounts$Model,
+		{
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'node1', _1: _elm_lang$core$Set$empty},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'node2', _1: _elm_lang$core$Set$empty},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'Websocket ECHO REPLY', _1: _elm_lang$core$Set$empty},
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		''),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$WebsocketDemoShowMessageCounts$update = F2(
+	function (msg, _p12) {
+		var _p13 = _p12;
+		var _p15 = _p13.nodes;
+		var _p14 = msg;
+		if (_p14.ctor === 'NewMessage') {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(
+					_user$project$WebsocketDemoShowMessageCounts$Model,
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$WebsocketDemoShowMessageCounts$updateSet(_p14._0),
+						_p15),
+					_p13.errorMessage),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_user$project$WebsocketDemoShowMessageCounts$Model, _p15, _p14._0),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$WebsocketDemoShowMessageCounts$Trace = F3(
+	function (a, b, c) {
+		return {id: a, node: b, time: c};
+	});
+var _user$project$WebsocketDemoShowMessageCounts$decoderTrace = A4(
+	_elm_lang$core$Json_Decode$map3,
+	_user$project$WebsocketDemoShowMessageCounts$Trace,
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'id',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'node',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
+			_0: 'time',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$float));
+var _user$project$WebsocketDemoShowMessageCounts$ErrorMessage = function (a) {
+	return {ctor: 'ErrorMessage', _0: a};
+};
+var _user$project$WebsocketDemoShowMessageCounts$NewMessage = function (a) {
+	return {ctor: 'NewMessage', _0: a};
+};
+var _user$project$WebsocketDemoShowMessageCounts$jsonToTraceMsg = function (str) {
+	var _p16 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$WebsocketDemoShowMessageCounts$decoderTrace, str);
+	if (_p16.ctor === 'Ok') {
+		return _user$project$WebsocketDemoShowMessageCounts$NewMessage(_p16._0);
+	} else {
+		return _user$project$WebsocketDemoShowMessageCounts$ErrorMessage(_p16._0);
+	}
+};
+var _user$project$WebsocketDemoShowMessageCounts$subscriptions = function (model) {
+	return A2(_elm_lang$websocket$WebSocket$listen, 'ws://localhost:9293/traced', _user$project$WebsocketDemoShowMessageCounts$jsonToTraceMsg);
+};
+var _user$project$WebsocketDemoShowMessageCounts$main = _elm_lang$html$Html$program(
+	{init: _user$project$WebsocketDemoShowMessageCounts$init, view: _user$project$WebsocketDemoShowMessageCounts$view, update: _user$project$WebsocketDemoShowMessageCounts$update, subscriptions: _user$project$WebsocketDemoShowMessageCounts$subscriptions})();

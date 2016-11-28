@@ -12,32 +12,35 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.17.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.18.0" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:2.2.11" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.11" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-websocket:2.17.1" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-websocket:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlets:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-client:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jmx:8.1.17.v20150415" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-jackson:2.17.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-websocket:2.18.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-server:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlets:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-continuation:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jmx:9.2.19.v20160908" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-jackson:2.18.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.13" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.13" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.camel:camel-test:2.17.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.camel:camel-test:2.18.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>
 </module>

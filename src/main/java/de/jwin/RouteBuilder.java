@@ -3,12 +3,8 @@ package de.jwin;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
-import org.apache.camel.model.ProcessorDefinition;
-import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.processor.interceptor.Tracer;
-
-import java.util.List;
 
 class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
 
@@ -20,48 +16,25 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
         tracer.setTraceOutExchanges(true);
         tracer.setDestinationUri("direct:traced");
         tracer.setLogLevel(LoggingLevel.DEBUG);
-/*
-        DefaultTraceFormatter defaultTraceFormatter = tracer.getDefaultTraceFormatter();
-        defaultTraceFormatter.setShowExchangeId(true);
-        defaultTraceFormatter.setShowBody(true);
-        defaultTraceFormatter.setShowBodyType(true);
-        defaultTraceFormatter.setShowNode(true);
-*/
         getContext().addInterceptStrategy(tracer);
         getContext().setMessageHistory(true);
 
 
-        // ROUTES
-        RouteDefinition definition = from("websocket://foo").id("ROUTE websocket")
+        from("websocket://localhost:9292/").id("Websocket ECHO FROM")
                 .log("INPUT ${body}").id("INPUT log")
                 .to("seda:next").id("to seda");
 
-        List<ProcessorDefinition<?>> outputs = definition.getOutputs();
-        for (ProcessorDefinition<?> output : outputs) {
-            System.out.println("output = " + output.getId());
-        }
-
         from("seda:next?concurrentConsumers=3").id("SEDA")
-
                 .log("${body}").id("node1")
-
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("inside processor...");
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                        }
-                        System.out.println("processor exit");
+                        Thread.sleep(5000);
                     }
                 }).id("node2")
+                .to("websocket://localhost:9292/").id("Websocket ECHO REPLY");
 
-                .to("websocket://foo").id("node3");
-
-
-
-        from("direct:traced")
+        from("direct:traced").id("Websocket TRACER")
                 .process(new TraceMessageProcessor())
                 .marshal().json(JsonLibrary.Jackson)
                 .convertBodyTo(String.class)
