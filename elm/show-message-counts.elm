@@ -24,7 +24,7 @@ type alias MessageSet = Set.Set NodeId
 
 type alias Model =
   { nodes : List (NodeName, MessageSet),
-    traces : List (String),
+    traces : List Trace,
     errorMessage : String
   }
 
@@ -35,7 +35,7 @@ init =
 type alias Trace =
   { id:   String,
     node: String,
-    msg: String,
+    unitOfWork: String,
     time: Float
   }
 
@@ -60,7 +60,7 @@ update msg model =
     NewMessage trace ->
       ({ model |
             nodes = (List.map (updateSet trace) model.nodes),
-            traces = trace.msg :: model.traces
+            traces = trace :: model.traces
        }, Cmd.none)
 
     ErrorMessage errMsg -> ({ model | errorMessage = errMsg }, Cmd.none)
@@ -82,7 +82,7 @@ decoderTrace : Decoder Trace
 decoderTrace = Json.Decode.map4 Trace
   (at ["id"] Json.Decode.string)
   (at ["node"] Json.Decode.string)
-  (at ["msg"] Json.Decode.string)
+  (at ["unitOfWork"] Json.Decode.string)
   (at ["time"] Json.Decode.float)
 
 
@@ -92,12 +92,16 @@ view : Model -> Html Msg
 view {nodes, traces, errorMessage} =
   div []
     [ div [] (List.map viewCount nodes),
-      div [] (List.map viewTrace traces) ]
+      hr [] [],
+      table [] (List.map viewTrace traces) ]
 
 viewCount : (NodeName, MessageSet) -> Html msg
 viewCount (name, set) =
   div [] [text (name ++ " " ++ (toString (Set.size set)))]
 
-viewTrace : String -> Html msg
-viewTrace msg =
-  span [] [text msg, br [] []]
+viewTrace : Trace -> Html msg
+viewTrace {node, unitOfWork} =
+  tr [] [
+    td [] [text node],
+    td [] [text unitOfWork]
+  ]

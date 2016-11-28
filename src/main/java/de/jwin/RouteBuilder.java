@@ -42,7 +42,8 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
                     public void process(Exchange exchange) throws Exception {
                         Thread.sleep(5000);
                     }
-                }).id("node2")
+                })
+                .log("${body}").id("node2")
                 .to("websocket://localhost:9292/").id("Websocket ECHO REPLY");
 */
 
