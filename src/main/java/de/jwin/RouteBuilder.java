@@ -3,8 +3,12 @@ package de.jwin;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
+import org.apache.camel.model.ProcessorDefinition;
+import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.processor.interceptor.Tracer;
+
+import java.util.List;
 
 class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
 
@@ -28,9 +32,14 @@ class RouteBuilder extends org.apache.camel.builder.RouteBuilder {
 
 
         // ROUTES
-        from("websocket://foo").id("ROUTE websocket")
+        RouteDefinition definition = from("websocket://foo").id("ROUTE websocket")
                 .log("INPUT ${body}").id("INPUT log")
                 .to("seda:next").id("to seda");
+
+        List<ProcessorDefinition<?>> outputs = definition.getOutputs();
+        for (ProcessorDefinition<?> output : outputs) {
+            System.out.println("output = " + output.getId());
+        }
 
         from("seda:next?concurrentConsumers=3").id("SEDA")
 
