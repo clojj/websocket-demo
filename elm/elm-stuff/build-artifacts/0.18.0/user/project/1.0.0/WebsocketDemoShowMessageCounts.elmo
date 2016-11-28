@@ -1,3 +1,20 @@
+var _user$project$WebsocketDemoShowMessageCounts$viewTrace = function (msg) {
+	return A2(
+		_elm_lang$html$Html$span,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(msg),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$br,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$WebsocketDemoShowMessageCounts$viewCount = function (_p0) {
 	var _p1 = _p0;
 	return A2(
@@ -28,7 +45,14 @@ var _user$project$WebsocketDemoShowMessageCounts$view = function (_p2) {
 				_elm_lang$html$Html$div,
 				{ctor: '[]'},
 				A2(_elm_lang$core$List$map, _user$project$WebsocketDemoShowMessageCounts$viewCount, _p3.nodes)),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					A2(_elm_lang$core$List$map, _user$project$WebsocketDemoShowMessageCounts$viewTrace, _p3.traces)),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _user$project$WebsocketDemoShowMessageCounts$updateSet = F2(
@@ -49,13 +73,41 @@ var _user$project$WebsocketDemoShowMessageCounts$updateSet = F2(
 			_1: A2(_elm_lang$core$Set$insert, _p10, _p9)
 		} : {ctor: '_Tuple2', _0: _p8, _1: _p9});
 	});
-var _user$project$WebsocketDemoShowMessageCounts$Model = F2(
-	function (a, b) {
-		return {nodes: a, errorMessage: b};
+var _user$project$WebsocketDemoShowMessageCounts$update = F2(
+	function (msg, model) {
+		var _p12 = msg;
+		if (_p12.ctor === 'NewMessage') {
+			var _p13 = _p12._0;
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						nodes: A2(
+							_elm_lang$core$List$map,
+							_user$project$WebsocketDemoShowMessageCounts$updateSet(_p13),
+							model.nodes),
+						traces: {ctor: '::', _0: _p13.msg, _1: model.traces}
+					}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{errorMessage: _p12._0}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$WebsocketDemoShowMessageCounts$Model = F3(
+	function (a, b, c) {
+		return {nodes: a, traces: b, errorMessage: c};
 	});
 var _user$project$WebsocketDemoShowMessageCounts$init = {
 	ctor: '_Tuple2',
-	_0: A2(
+	_0: A3(
 		_user$project$WebsocketDemoShowMessageCounts$Model,
 		{
 			ctor: '::',
@@ -70,40 +122,16 @@ var _user$project$WebsocketDemoShowMessageCounts$init = {
 				}
 			}
 		},
+		{ctor: '[]'},
 		''),
 	_1: _elm_lang$core$Platform_Cmd$none
 };
-var _user$project$WebsocketDemoShowMessageCounts$update = F2(
-	function (msg, _p12) {
-		var _p13 = _p12;
-		var _p15 = _p13.nodes;
-		var _p14 = msg;
-		if (_p14.ctor === 'NewMessage') {
-			return {
-				ctor: '_Tuple2',
-				_0: A2(
-					_user$project$WebsocketDemoShowMessageCounts$Model,
-					A2(
-						_elm_lang$core$List$map,
-						_user$project$WebsocketDemoShowMessageCounts$updateSet(_p14._0),
-						_p15),
-					_p13.errorMessage),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: A2(_user$project$WebsocketDemoShowMessageCounts$Model, _p15, _p14._0),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		}
+var _user$project$WebsocketDemoShowMessageCounts$Trace = F4(
+	function (a, b, c, d) {
+		return {id: a, node: b, msg: c, time: d};
 	});
-var _user$project$WebsocketDemoShowMessageCounts$Trace = F3(
-	function (a, b, c) {
-		return {id: a, node: b, time: c};
-	});
-var _user$project$WebsocketDemoShowMessageCounts$decoderTrace = A4(
-	_elm_lang$core$Json_Decode$map3,
+var _user$project$WebsocketDemoShowMessageCounts$decoderTrace = A5(
+	_elm_lang$core$Json_Decode$map4,
 	_user$project$WebsocketDemoShowMessageCounts$Trace,
 	A2(
 		_elm_lang$core$Json_Decode$at,
@@ -125,6 +153,14 @@ var _user$project$WebsocketDemoShowMessageCounts$decoderTrace = A4(
 		_elm_lang$core$Json_Decode$at,
 		{
 			ctor: '::',
+			_0: 'msg',
+			_1: {ctor: '[]'}
+		},
+		_elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$at,
+		{
+			ctor: '::',
 			_0: 'time',
 			_1: {ctor: '[]'}
 		},
@@ -136,11 +172,11 @@ var _user$project$WebsocketDemoShowMessageCounts$NewMessage = function (a) {
 	return {ctor: 'NewMessage', _0: a};
 };
 var _user$project$WebsocketDemoShowMessageCounts$jsonToTraceMsg = function (str) {
-	var _p16 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$WebsocketDemoShowMessageCounts$decoderTrace, str);
-	if (_p16.ctor === 'Ok') {
-		return _user$project$WebsocketDemoShowMessageCounts$NewMessage(_p16._0);
+	var _p14 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$WebsocketDemoShowMessageCounts$decoderTrace, str);
+	if (_p14.ctor === 'Ok') {
+		return _user$project$WebsocketDemoShowMessageCounts$NewMessage(_p14._0);
 	} else {
-		return _user$project$WebsocketDemoShowMessageCounts$ErrorMessage(_p16._0);
+		return _user$project$WebsocketDemoShowMessageCounts$ErrorMessage(_p14._0);
 	}
 };
 var _user$project$WebsocketDemoShowMessageCounts$subscriptions = function (model) {

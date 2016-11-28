@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.processor.interceptor.DefaultTraceEventMessage;
 import org.apache.camel.processor.interceptor.TraceEventMessage;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ class TraceMessageProcessor implements org.apache.camel.Processor {
         map.put("id", breadcrumbid);
         map.put("node", nodeId);
         map.put("time", msg.getTimestamp());
+        map.put("msg", MessageFormat.format("NodeId {0} UnitOfWork {1}", nodeId, exchange.getUnitOfWork().getId()));
         //map.put("fromNode", msg.getPreviousNode() != null ? msg.getPreviousNode() : "---");
         //map.put("toNode", msg.getToNode() != null ? msg.getToNode() : "---");
 

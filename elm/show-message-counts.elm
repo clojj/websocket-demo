@@ -24,17 +24,18 @@ type alias MessageSet = Set.Set NodeId
 
 type alias Model =
   { nodes : List (NodeName, MessageSet),
+    traces : List (String),
     errorMessage : String
   }
 
 init : (Model, Cmd Msg)
 init =
-  -- TODO build graph dynamically
-  (Model [("node1", Set.empty), ("node2", Set.empty), ("Websocket ECHO REPLY", Set.empty)] "", Cmd.none)
+  (Model [("node1", Set.empty), ("node2", Set.empty), ("Websocket ECHO REPLY", Set.empty)] [] "", Cmd.none)
 
 type alias Trace =
   { id:   String,
     node: String,
+    msg: String,
     time: Float
   }
 
@@ -54,12 +55,15 @@ updateSet {id, node, time} (name, set) =
     (name, set)
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg {nodes, errorMessage} =
+update msg model =
   case msg of
     NewMessage trace ->
-      (Model (List.map (updateSet trace) nodes) errorMessage, Cmd.none)
+      ({ model |
+            nodes = (List.map (updateSet trace) model.nodes),
+            traces = trace.msg :: model.traces
+       }, Cmd.none)
 
-    ErrorMessage str -> (Model nodes str, Cmd.none)
+    ErrorMessage errMsg -> ({ model | errorMessage = errMsg }, Cmd.none)
 
 
 -- SUBSCRIPTIONS
@@ -75,19 +79,25 @@ jsonToTraceMsg str =
     (Err errMsg) -> ErrorMessage errMsg
 
 decoderTrace : Decoder Trace
-decoderTrace = Json.Decode.map3 Trace
+decoderTrace = Json.Decode.map4 Trace
   (at ["id"] Json.Decode.string)
   (at ["node"] Json.Decode.string)
+  (at ["msg"] Json.Decode.string)
   (at ["time"] Json.Decode.float)
 
 
 -- VIEW
 
 view : Model -> Html Msg
-view {nodes, errorMessage} =
+view {nodes, traces, errorMessage} =
   div []
-    [ div [] (List.map viewCount nodes) ]
+    [ div [] (List.map viewCount nodes),
+      div [] (List.map viewTrace traces) ]
 
 viewCount : (NodeName, MessageSet) -> Html msg
 viewCount (name, set) =
   div [] [text (name ++ " " ++ (toString (Set.size set)))]
+
+viewTrace : String -> Html msg
+viewTrace msg =
+  span [] [text msg, br [] []]
